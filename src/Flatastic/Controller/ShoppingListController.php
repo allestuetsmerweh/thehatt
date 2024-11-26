@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace App\Flatastic\Controller;
 
-use App\Service\FlatasticApi;
+use App\Flatastic\Service\FlatasticApi;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class BotController extends AbstractController
+class ShoppingListController extends AbstractController
 {
-    #[Route('/bot')]
+    #[Route('/shopping_list', host:'flatastic.hatt.style')]
+    #[Route('/flatastic.hatt.style/shopping_list', host:'localhost')]
     public function list(
         Request $request,
         FlatasticApi $api,
@@ -19,10 +20,12 @@ class BotController extends AbstractController
     ): JsonResponse {
         $auth_data = $api->authenticateFromRequest($request);
 
-        $bot = $api->getBotUser();
+        $flatmates = $api->getFlatmates();
+        $shopping_list = $api->getShoppingList();
 
         return new JsonResponse([
-            'bot' => $bot,
+            'flatmates' => $flatmates,
+            'shopping_list' => $shopping_list,
         ]);
     }
 }

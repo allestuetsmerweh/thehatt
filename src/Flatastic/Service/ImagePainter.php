@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Flatastic\Service;
 
 use Symfony\Component\HttpFoundation\Response;
 
