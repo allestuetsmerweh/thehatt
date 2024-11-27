@@ -1,5 +1,5 @@
 {
-    "name": "allestuetsmerweh/flatastic.hatt.style",
+    "name": "allestuetsmerweh/hatt.style",
     "type": "project",
     "license": "MIT",
     "authors": [
@@ -11,21 +11,21 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.0.2",
+        "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "allestuetsmerweh/php-deploy": "^1.0",
-        "league/flysystem": "^2.3",
-        "league/flysystem-ftp": "^2.3",
+        "allestuetsmerweh/php-deploy": "^2.7",
+        "league/flysystem": "^3.29",
+        "league/flysystem-ftp": "^3.29",
         "symfony/apache-pack": "^1.0",
-        "symfony/console": "6.0.*",
-        "symfony/dotenv": "6.0.*",
+        "symfony/console": "7.1.*",
+        "symfony/dotenv": "7.1.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.0.*",
-        "symfony/http-client": "6.0.*",
+        "symfony/framework-bundle": "7.1.*",
+        "symfony/http-client": "7.1.*",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/runtime": "6.0.*",
-        "symfony/yaml": "6.0.*"
+        "symfony/runtime": "7.1.*",
+        "symfony/yaml": "7.1.*"
     },
     "config": {
         "allow-plugins": {
@@ -75,7 +75,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.0.*"
+            "require": "7.1.*"
         }
     }
 }

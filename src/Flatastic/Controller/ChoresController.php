@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller;
+namespace App\Flatastic\Controller;
 
-use App\Service\FlatasticApi;
-use App\Service\ImagePainter;
+use App\Flatastic\Service\FlatasticApi;
+use App\Flatastic\Service\ImagePainter;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ChoresController extends AbstractController
 {
-    #[Route('/chores')]
+    #[Route('/chores', host:'flatastic.hatt.style')]
+    #[Route('/flatastic.hatt.style/chores', host:'localhost')]
     public function list(
         Request $request,
         FlatasticApi $api,
@@ -31,7 +32,8 @@ class ChoresController extends AbstractController
         ]);
     }
 
-    #[Route('/chores/table/{frequency}.{format}')]
+    #[Route('/chores/table/{frequency}.{format}', host:'flatastic.hatt.style')]
+    #[Route('/flatastic.hatt.style/chores/table/{frequency}.{format}', host:'localhost')]
     public function table(
         Request $request,
         FlatasticApi $api,

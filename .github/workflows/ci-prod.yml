@@ -1,0 +1,44 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+name: CI:prod
+jobs:
+
+  deploy-test:
+    name: Deploy to hatt.style
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: ${{ runner.os }}-composer-
+    - name: Install dependencies
+      run: composer install --no-dev --prefer-dist
+    # - name: Get npm cache directory
+    #   id: npm-cache
+    #   run: |
+    #     echo "::set-output name=dir::$(npm config get cache)"
+    # - uses: actions/cache@v1
+    #   with:
+    #     path: ${{ steps.npm-cache.outputs.dir }}
+    #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-node-
+    # - name: Install JavaScript dependencies
+    #   run: npm install
+    - name: Deploy over FTPS
+      env:
+        USERNAME: ${{ secrets.DEPLOY_USERNAME }}
+        PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
+      run: php ./Deploy.php --target=cyon --environment=prod --username="$USERNAME"

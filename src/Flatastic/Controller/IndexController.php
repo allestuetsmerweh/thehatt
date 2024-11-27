@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Flatastic\Controller;
 
-use App\Service\FlatasticApi;
+use App\Flatastic\Service\FlatasticApi;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends AbstractController
 {
-    #[Route('/')]
+    #[Route('/', host:'flatastic.hatt.style')]
+    #[Route('/flatastic.hatt.style', host:'localhost')]
     public function get(
         LoggerInterface $logger,
     ): Response {

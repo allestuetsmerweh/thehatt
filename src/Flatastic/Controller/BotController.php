@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace App\Flatastic\Controller;
 
-use App\Service\FlatasticApi;
+use App\Flatastic\Service\FlatasticApi;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FlatController extends AbstractController
+class BotController extends AbstractController
 {
-    #[Route('/flat')]
+    #[Route('/bot', host:'flatastic.hatt.style')]
+    #[Route('/flatastic.hatt.style/bot', host:'localhost')]
     public function list(
         Request $request,
         FlatasticApi $api,
@@ -19,10 +20,10 @@ class FlatController extends AbstractController
     ): JsonResponse {
         $auth_data = $api->authenticateFromRequest($request);
 
-        $flat = $api->getFlat();
+        $bot = $api->getBotUser();
 
         return new JsonResponse([
-            'flat' => $flat,
+            'bot' => $bot,
         ]);
     }
 }
