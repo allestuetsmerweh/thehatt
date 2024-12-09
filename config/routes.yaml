@@ -8,3 +8,8 @@ controllers_Flatastic:
         path: ../src/Flatastic/Controller/
         namespace: App\Flatastic\Controller
     type: attribute
+controllers_Frame:
+    resource:
+        path: ../src/Frame/Controller/
+        namespace: App\Frame\Controller
+    type: attribute
