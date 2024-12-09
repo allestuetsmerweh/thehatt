@@ -57,6 +57,10 @@ class Deploy extends AbstractDefaultDeploy {
         $flatastic_public = $getPublicPathForSubdomain('flatastic.hatt.style');
         $this->installForSubdomain($flatastic_public);
 
+        // frame.hatt.style
+        $flatastic_public = $getPublicPathForSubdomain('frame.hatt.style');
+        $this->installForSubdomain($flatastic_public);
+
         return [];
     }
 
