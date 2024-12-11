@@ -2,6 +2,18 @@
     "allestuetsmerweh/php-deploy": {
         "version": "1.0.5"
     },
+    "friendsofphp/php-cs-fixer": {
+        "version": "3.65",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "be2103eb4a20942e28a6dd87736669b757132435"
+        },
+        "files": [
+            ".php-cs-fixer.dist.php"
+        ]
+    },
     "league/flysystem": {
         "version": "2.4.5"
     },

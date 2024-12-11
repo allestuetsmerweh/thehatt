@@ -23,7 +23,7 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
         restore-keys: ${{ runner.os }}-composer-
     - name: Install dependencies
-      run: composer install --no-dev --prefer-dist
+      run: composer install --prefer-dist
     # - name: Get npm cache directory
     #   id: npm-cache
     #   run: |
@@ -36,8 +36,5 @@ jobs:
     #       ${{ runner.os }}-node-
     # - name: Install JavaScript dependencies
     #   run: npm install
-    - name: Deploy over FTPS
-      env:
-        USERNAME: ${{ secrets.DEPLOY_USERNAME }}
-        PASSWORD: ${{ secrets.DEPLOY_PASSWORD }}
-      run: php ./Deploy.php --target=cyon --environment=prod --username="$USERNAME"
+    - name: PHP Code style check
+      run: composer fixdiff

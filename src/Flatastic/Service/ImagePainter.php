@@ -4,7 +4,8 @@ namespace App\Flatastic\Service;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class InvalidFormatException {}
+class InvalidFormatException {
+}
 
 class ImagePainter {
     public function getImageResponse($image, $format) {
@@ -89,13 +90,17 @@ class ImagePainter {
     private function getPhpFont($font_size) {
         if ($font_size < 10) {
             return 1;
-        } else if ($font_size < 12) {
+        }
+        if ($font_size < 12) {
             return 2;
-        } else if ($font_size < 14) {
+        }
+        if ($font_size < 14) {
             return 3;
-        } else if ($font_size < 16) {
+        }
+        if ($font_size < 16) {
             return 4;
-        } else if ($font_size < 18) {
+        }
+        if ($font_size < 18) {
             return 5;
         }
         return 1;
@@ -145,7 +150,7 @@ class ImagePainter {
             $width += $col_width * $width_per_char + $width_per_column;
         }
         $height = count($table_data) * $height_per_row;
-        
+
         $instructions = [];
         $y = $y_offset;
         foreach ($table_data as $row_index => $row) {

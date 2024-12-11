@@ -10,8 +10,7 @@ class FlatasticApi {
     private $client;
     private $authData;
 
-    public function __construct(HttpClientInterface $client)
-    {
+    public function __construct(HttpClientInterface $client) {
         $this->client = $client;
     }
 
@@ -38,7 +37,6 @@ class FlatasticApi {
     public function getShoutsUrl(): string {
         return "{$this->baseUrl}/shouts";
     }
-
 
     public function authenticateFromRequest($request) {
         $basic_username = $request->headers->get('php-auth-user');
@@ -122,8 +120,7 @@ class FlatasticApi {
                 ],
             ],
         );
-        $chores_stats = $response->toArray() ?? [];
-        return $chores_stats;
+        return $response->toArray() ?? [];
     }
 
     public function getShoppingList() {
@@ -137,8 +134,7 @@ class FlatasticApi {
                 ],
             ],
         );
-        $shopping_list = $response->toArray() ?? [];
-        return $shopping_list;
+        return $response->toArray() ?? [];
     }
 
     public function getFlat() {
@@ -160,8 +156,7 @@ class FlatasticApi {
                 ],
             ],
         );
-        $flat = $response->toArray() ?? [];
-        return $flat;
+        return $response->toArray() ?? [];
     }
 
     public function createShout($text) {
@@ -178,7 +173,6 @@ class FlatasticApi {
                 ],
             ],
         );
-        $shout = $response->toArray() ?? [];
-        return $shout;
+        return $response->toArray() ?? [];
     }
 }

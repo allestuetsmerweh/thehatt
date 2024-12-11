@@ -1,4 +1,9 @@
 node_modules/
-public/frame/
+private/
 var/
 vendor/
+
+###> friendsofphp/php-cs-fixer ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+###< friendsofphp/php-cs-fixer ###

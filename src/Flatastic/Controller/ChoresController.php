@@ -6,16 +6,14 @@ use App\Flatastic\Service\FlatasticApi;
 use App\Flatastic\Service\ImagePainter;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ChoresController extends AbstractController
-{
-    #[Route('/chores', host:'flatastic.hatt.style')]
-    #[Route('/flatastic.hatt.style/chores', host:'localhost')]
+class ChoresController extends AbstractController {
+    #[Route('/chores', host: 'flatastic.hatt.style')]
+    #[Route('/flatastic.hatt.style/chores', host: 'localhost')]
     public function list(
         Request $request,
         FlatasticApi $api,
@@ -27,13 +25,13 @@ class ChoresController extends AbstractController
         $chores = $api->getChores();
 
         return new JsonResponse([
-            'flatmates'=> $flatmates,
-            'chores'=> $chores,
+            'flatmates' => $flatmates,
+            'chores' => $chores,
         ]);
     }
 
-    #[Route('/chores/table/{frequency}.{format}', host:'flatastic.hatt.style')]
-    #[Route('/flatastic.hatt.style/chores/table/{frequency}.{format}', host:'localhost')]
+    #[Route('/chores/table/{frequency}.{format}', host: 'flatastic.hatt.style')]
+    #[Route('/flatastic.hatt.style/chores/table/{frequency}.{format}', host: 'localhost')]
     public function table(
         Request $request,
         FlatasticApi $api,
@@ -44,7 +42,8 @@ class ChoresController extends AbstractController
     ): Response {
         $rotation_time = $this->parseFrequency($frequency);
         $table = $this->getTableForChores(
-            $request, $api, 
+            $request,
+            $api,
             function ($chore) use ($rotation_time) {
                 return $chore['rotationTime'] == $rotation_time;
             },
