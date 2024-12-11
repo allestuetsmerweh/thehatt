@@ -46,7 +46,7 @@ class Deploy extends AbstractDefaultDeploy {
     /** @return array<string, string> */
     public function install(string $public_path): array {
         $fs = new Symfony\Component\Filesystem\Filesystem();
-        $fs->copy(__DIR__.'/../../.env.local', __DIR__.'/.env.local');
+        $fs->copy(__DIR__.'/../.env.local', __DIR__.'/.env.local');
 
         $getPublicPathForSubdomain = function (string $subdomain) use ($public_path): string {
             return str_replace($this->getRemotePublicPath(), "public_html/{$subdomain}", $public_path);
