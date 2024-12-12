@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class IndexController extends AbstractController {
     #[Route('/', host: 'frame.hatt.style')]
     #[Route('/frame.hatt.style', host: 'localhost')]
+    #[Route('/frame.hatt.style', host: 'staging.hatt.style')]
     public function index(
         Request $request,
         LoggerInterface $logger,
@@ -97,7 +98,8 @@ class IndexController extends AbstractController {
     }
 
     protected function getHref(Request $request): string {
-        preg_match('/(.*)\/?/', $request->getPathInfo(), $matches);
-        return $matches[1];
+        $href = $request->getPathInfo();
+        return substr($href, strlen($href) - 1, 1) === '/'
+            ? substr($href, 0, strlen($href) - 1) : $href;
     }
 }
