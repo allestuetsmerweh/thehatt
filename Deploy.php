@@ -18,63 +18,124 @@ class Deploy extends AbstractDefaultDeploy {
     }
 
     protected function getFlysystemFilesystem(): Filesystem {
-        $options = FtpConnectionOptions::fromArray([
-            'host' => 's007.cyon.net', // required
-            'root' => '/', // required
-            'username' => $this->username, // required
-            'password' => $this->password, // required
-            'port' => 21,
-            'ssl' => true,
-            'timeout' => 90,
-        ]);
-        $adapter = new FtpAdapter($options);
-        return new Filesystem($adapter);
+        if ($this->target === 'cyon') {
+            $options = FtpConnectionOptions::fromArray([
+                'host' => 's007.cyon.net', // required
+                'root' => '/', // required
+                'username' => $this->username, // required
+                'password' => $this->password, // required
+                'port' => 21,
+                'ssl' => true,
+                'timeout' => 90,
+            ]);
+            $adapter = new FtpAdapter($options);
+            return new Filesystem($adapter);
+        }
+        throw new Exception("Target must be `cyon`");
     }
 
     public function getRemotePublicPath(): string {
-        return 'public_html/deploy.hatt.style';
+        if ($this->target === 'cyon') {
+            if ($this->environment === 'staging') {
+                return 'public_html/staging.hatt.style';
+            }
+            if ($this->environment === 'prod') {
+                return 'public_html/deploy.hatt.style';
+            }
+            throw new Exception("Environment must be `staging` or `prod`");
+        }
+        throw new Exception("Target must be `cyon`");
     }
 
     public function getRemotePublicUrl(): string {
-        return "https://deploy.hatt.style";
+        if ($this->target === 'cyon') {
+            if ($this->environment === 'staging') {
+                return "https://staging.hatt.style";
+            }
+            if ($this->environment === 'prod') {
+                return "https://deploy.hatt.style";
+            }
+            throw new Exception("Environment must be `staging` or `prod`");
+        }
+        throw new Exception("Target must be `cyon`");
     }
 
     public function getRemotePrivatePath(): string {
-        return 'private_files';
+        if ($this->target === 'cyon') {
+            if ($this->environment === 'staging') {
+                return 'private_files/staging';
+            }
+            if ($this->environment === 'prod') {
+                return 'private_files/prod';
+            }
+            throw new Exception("Environment must be `staging` or `prod`");
+        }
+        throw new Exception("Target must be `cyon`");
     }
 
     /** @return array<string, string> */
     public function install(string $public_path): array {
-        $fs = new Symfony\Component\Filesystem\Filesystem();
-        $fs->copy(__DIR__.'/../.env.local', __DIR__.'/.env.local');
+        $this->logger->info("Prepare for installation (env={$this->environment})...");
 
-        $getPublicPathForSubdomain = function (string $subdomain) use ($public_path): string {
-            return str_replace($this->getRemotePublicPath(), "public_html/{$subdomain}", $public_path);
+        $fs = new Symfony\Component\Filesystem\Filesystem();
+        $fs->copy(__DIR__.'/../../.env.local', __DIR__.'/.env.local');
+
+        $public_url = $this->getRemotePublicUrl();
+        $staging_token = null;
+        $install_path = $public_path;
+        if ($this->environment === 'staging') {
+            $entries = scandir($public_path);
+            foreach ($entries as $entry) {
+                $path = "{$public_path}/{$entry}";
+                if ($entry[0] !== '.' && is_dir($path) && $fs->exists("{$path}/_TOKEN_DIR_WILL_BE_REMOVED.txt")) {
+                    $fs->remove($path);
+                }
+            }
+            $staging_token = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(openssl_random_pseudo_bytes(18)));
+            $this->logger->info("--------------------------------------------");
+            $this->logger->info("   {$public_url}/{$staging_token}/   ");
+            $this->logger->info("--------------------------------------------");
+            $install_path = "{$public_path}/{$staging_token}";
+        }
+
+        $getPublicPathForSubdomain = function (string $subdomain) use ($install_path): string {
+            return str_replace($this->getRemotePublicPath(), "public_html/{$subdomain}", $install_path);
         };
 
-        // hatt.style
-        $base_public = $getPublicPathForSubdomain('hatt.style');
-        $this->installForSubdomain($base_public);
+        if ($this->environment === 'staging') {
+            // staging.hatt.style
+            $base_public = $getPublicPathForSubdomain('staging.hatt.style');
+            $this->installForSubdomain($base_public);
+            file_put_contents("{$install_path}/_TOKEN_DIR_WILL_BE_REMOVED.txt", '');
+        }
+        if ($this->environment === 'prod') {
+            // hatt.style
+            $base_public = $getPublicPathForSubdomain('hatt.style');
+            $this->installForSubdomain($base_public);
 
-        // flatastic.hatt.style
-        $flatastic_public = $getPublicPathForSubdomain('flatastic.hatt.style');
-        $this->installForSubdomain($flatastic_public);
+            // flatastic.hatt.style
+            $flatastic_public = $getPublicPathForSubdomain('flatastic.hatt.style');
+            $this->installForSubdomain($flatastic_public);
 
-        // frame.hatt.style
-        $flatastic_public = $getPublicPathForSubdomain('frame.hatt.style');
-        $this->installForSubdomain($flatastic_public);
+            // frame.hatt.style
+            $flatastic_public = $getPublicPathForSubdomain('frame.hatt.style');
+            $this->installForSubdomain($flatastic_public);
+        }
 
-        return [];
+        return [
+            'staging_token' => $staging_token,
+        ];
     }
 
-    protected function installForSubdomain(string $public_path): void {
+    protected function installForSubdomain(string $install_path): void {
+        $levels = count(explode('/', $install_path)) - count(explode('/', __DIR__)) + 4;
         $fs = new Symfony\Component\Filesystem\Filesystem();
-        $fs->copy(__DIR__.'/public/.htaccess', "{$public_path}/.htaccess", true);
-        $index_path = "{$public_path}/index.php";
+        $fs->copy(__DIR__.'/public/.htaccess', "{$install_path}/.htaccess", true);
+        $index_path = "{$install_path}/index.php";
         $index_contents = file_get_contents(__DIR__.'/public/index.php');
         $updated_index_contents = str_replace(
             "require_once dirname(__DIR__).'/vendor/autoload_runtime.php';",
-            "require_once __DIR__.'/../../private_files/deploy/live/vendor/autoload_runtime.php';",
+            "require_once dirname(__DIR__, {$levels}).'/private_files/{$this->environment}/deploy/live/vendor/autoload_runtime.php';",
             $index_contents,
         );
         unlink($index_path);
