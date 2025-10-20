@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class IndexController extends AbstractController {
     #[Route('/', host: 'hatt.style')]
+    #[Route('/', host: 'thehatt.ch')]
     #[Route('/hatt.style', host: 'localhost')]
     public function index(
         Request $request,

@@ -1,5 +1,5 @@
 {
-  "name": "hatt.style",
+  "name": "thehatt.ch",
   "version": "1.0.0",
   "description": "All my hobby projects",
   "main": "index.ts",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/allestuetsmerweh/hatt.style.git"
+    "url": "git+https://github.com/allestuetsmerweh/thehatt.git"
   },
-  "author": "Simon Hatt <simon@hatt.style>",
+  "author": "Simon Hatt <simon+github@proton.me>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/allestuetsmerweh/hatt.style/issues"
+    "url": "https://github.com/allestuetsmerweh/thehatt/issues"
   },
-  "homepage": "https://github.com/allestuetsmerweh/hatt.style#readme",
+  "homepage": "https://github.com/allestuetsmerweh/thehatt#readme",
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
