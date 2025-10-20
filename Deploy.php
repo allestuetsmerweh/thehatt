@@ -37,10 +37,10 @@ class Deploy extends AbstractDefaultDeploy {
     public function getRemotePublicPath(): string {
         if ($this->target === 'cyon') {
             if ($this->environment === 'staging') {
-                return 'public_html/staging.hatt.style';
+                return 'public_html/staging.thehatt.ch';
             }
             if ($this->environment === 'prod') {
-                return 'public_html/deploy.hatt.style';
+                return 'public_html/deploy.thehatt.ch';
             }
             throw new Exception("Environment must be `staging` or `prod`");
         }
@@ -50,10 +50,10 @@ class Deploy extends AbstractDefaultDeploy {
     public function getRemotePublicUrl(): string {
         if ($this->target === 'cyon') {
             if ($this->environment === 'staging') {
-                return "https://staging.hatt.style";
+                return "https://staging.thehatt.ch";
             }
             if ($this->environment === 'prod') {
-                return "https://deploy.hatt.style";
+                return "https://deploy.thehatt.ch";
             }
             throw new Exception("Environment must be `staging` or `prod`");
         }
@@ -103,23 +103,15 @@ class Deploy extends AbstractDefaultDeploy {
         };
 
         if ($this->environment === 'staging') {
-            // staging.hatt.style
-            $base_public = $getPublicPathForSubdomain('staging.hatt.style');
+            // staging.thehatt.ch
+            $base_public = $getPublicPathForSubdomain('staging.thehatt.ch');
             $this->installForSubdomain($base_public);
             file_put_contents("{$install_path}/_TOKEN_DIR_WILL_BE_REMOVED.txt", '');
         }
         if ($this->environment === 'prod') {
-            // hatt.style
-            $base_public = $getPublicPathForSubdomain('hatt.style');
+            // thehatt.ch
+            $base_public = $getPublicPathForSubdomain('thehatt.ch');
             $this->installForSubdomain($base_public);
-
-            // flatastic.hatt.style
-            $flatastic_public = $getPublicPathForSubdomain('flatastic.hatt.style');
-            $this->installForSubdomain($flatastic_public);
-
-            // frame.hatt.style
-            $flatastic_public = $getPublicPathForSubdomain('frame.hatt.style');
-            $this->installForSubdomain($flatastic_public);
         }
 
         return [

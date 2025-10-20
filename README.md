@@ -1,3 +1,3 @@
-# hatt.style
+# thehatt.ch
 
 All my hobby projects
