@@ -1,15 +1,10 @@
-controllers_HattStyle:
+controllers_TheHatt:
     resource:
-        path: ../src/HattStyle/Controller/
-        namespace: App\HattStyle\Controller
+        path: ../src/TheHatt/Controller/
+        namespace: App\TheHatt\Controller
     type: attribute
-controllers_Flatastic:
+controllers_Velo:
     resource:
-        path: ../src/Flatastic/Controller/
-        namespace: App\Flatastic\Controller
-    type: attribute
-controllers_Frame:
-    resource:
-        path: ../src/Frame/Controller/
-        namespace: App\Frame\Controller
+        path: ../src/Velo/Controller/
+        namespace: App\Velo\Controller
     type: attribute

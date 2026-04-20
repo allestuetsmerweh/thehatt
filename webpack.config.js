@@ -77,34 +77,6 @@ const defaultConfig = {
     devtool: 'source-map',
 };
 
-const appsPath = './src/Apps';
-const apps = fs.readdirSync(appsPath);
-const appConfigs = apps
-    .filter((app) => fs.lstatSync(`${appsPath}/${app}`).isDirectory())
-    .map((app) => {
-        let extension = null;
-        if (fs.existsSync(`${appsPath}/${app}/index.ts`)) {
-            extension = 'ts';
-        } else if (fs.existsSync(`${appsPath}/${app}/index.tsx`)) {
-            extension = 'tsx';
-        }
-        if (!extension) {
-            return null;
-        }
-        return {
-            ...defaultConfig,
-            entry: `${appsPath}/${app}/index.${extension}`,
-            output: {
-                path: path.resolve(__dirname, `public/jsbuild/app-${app}`),
-                publicPath: `/jsbuild/app-${app}/`,
-                filename: '[name].min.js',
-                library: `olz${app}`,
-                libraryTarget: 'window',
-            },
-        };
-    })
-    .filter((config) => config !== null);
-
 module.exports = [
     {
         ...defaultConfig,
@@ -117,5 +89,4 @@ module.exports = [
             libraryTarget: 'window',
         },
     },
-    ...appConfigs,
 ];

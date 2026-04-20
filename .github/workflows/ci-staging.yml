@@ -38,6 +38,8 @@ jobs:
     #   run: npm install
     - name: PHP Code style check
       run: composer fixdiff
+    - name: PHP Static Analysis
+      run: composer stan
     - name: Deploy over FTPS
       env:
         USERNAME: ${{ secrets.DEPLOY_USERNAME }}

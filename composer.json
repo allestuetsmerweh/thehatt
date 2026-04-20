@@ -15,22 +15,26 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "allestuetsmerweh/php-deploy": "^2.7",
+        "doctrine/doctrine-bundle": "^3.2",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
+        "doctrine/orm": "^3.6",
         "league/flysystem": "^3.29",
         "league/flysystem-ftp": "^3.29",
         "symfony/apache-pack": "^1.0",
-        "symfony/console": "7.1.*",
-        "symfony/dotenv": "7.1.*",
+        "symfony/console": "7.3.*",
+        "symfony/dotenv": "7.3.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "7.1.*",
-        "symfony/http-client": "7.1.*",
-        "symfony/mime": "7.1.*",
+        "symfony/framework-bundle": "7.3.*",
+        "symfony/http-client": "7.3.*",
+        "symfony/mime": "7.3.*",
         "symfony/monolog-bundle": "^3.8",
-        "symfony/runtime": "7.1.*",
-        "symfony/yaml": "7.1.*"
+        "symfony/runtime": "7.3.*",
+        "symfony/yaml": "7.3.*"
     },
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true
         },
@@ -61,6 +65,7 @@
     "scripts": {
         "fix": "php-cs-fixer fix --config=./.php_cs_config.php -v",
         "fixdiff": "php-cs-fixer fix --config=./.php_cs_config.php -v --dry-run --diff",
+        "stan": "vendor/bin/phpstan",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -78,10 +83,16 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.1.*"
+            "require": "7.3.*",
+            "docker": false
         }
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.65"
+        "friendsofphp/php-cs-fixer": "^3",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-doctrine": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
+        "symfony/maker-bundle": "^1.67"
     }
 }
